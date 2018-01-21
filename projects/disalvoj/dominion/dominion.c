@@ -652,7 +652,7 @@ int adventurerPlayed(struct gameState *state) {
   int z = 0;
   int temphand[MAX_HAND];
 
-  while(drawntreasure<2){
+  while(drawntreasure<=2){ /*************************** BUG INTRODUCED: "<" --> "<=" *****************************/
     if (state->deckCount[currentPlayer] < 1) { //if the deck is empty, shuffle discard and add to deck
       shuffle (currentPlayer, state);
     }
@@ -684,7 +684,7 @@ int smithyPlayed(int handPos, struct gameState *state){
   int currentPlayer = whoseTurn(state);
   
 
-  for (i = 0; i < 3; i++) {
+  for (i = 1; i < 3; i++) { /********************** BUG INTRODUCED: "i = 0" --> "i = 1" ********************/
     drawCard(currentPlayer, state);
   }
 
@@ -698,7 +698,7 @@ int greatHallPlayed(int handPos, struct gameState *state) {
 
   drawCard(currentPlayer, state); //+1 card
 
-  state->numActions++; //+1 action
+  state->numActions--; //+1 action /************************************ BUG INTRODUCED: "numActions++" --> "numActions--" ******************/
 
   discardCard(handPos, currentPlayer, state, 0); //discard card from hand
   return 0;
@@ -717,7 +717,7 @@ int seaHagPlayed(struct gameState *state) {
   int i = 0;
   int currentPlayer = whoseTurn(state);  
 
-  for (i = 0; i < state->numPlayers; i++) {
+  for (i = 0; i > state->numPlayers; i++) { /************************** BUG INTRODUCED: "<" --> ">" *******************/
     if (i != currentPlayer) {
       state->discard[i][state->discardCount[i]] = state->deck[i][state->deckCount[i]--];  state->deckCount[i]--; //why is this here?
       state->discardCount[i]++;
