@@ -713,17 +713,19 @@ int outpostPlayed(int handPos, struct gameState *state) {
   return 0;
 }
 
-/******************************************SEA_HAG***************
- 
-      for (i = 0; i < state->numPlayers; i++){
-	if (i != currentPlayer){
-	  state->discard[i][state->discardCount[i]] = state->deck[i][state->deckCount[i]--];			    state->deckCount[i]--;
-	  state->discardCount[i]++;
-	  state->deck[i][state->deckCount[i]--] = curse;//Top card now a curse
-	}
-      }
-      return 0;
-*****************************************************/		
+int seaHagPlayed(struct gameState *state) {
+  int i = 0;
+  int currentPlayer = whoseTurn(state);  
+
+  for (i = 0; i < state->numPlayers; i++) {
+    if (i != currentPlayer) {
+      state->discard[i][state->discardCount[i]] = state->deck[i][state->deckCount[i]--];  state->deckCount[i]--; //why is this here?
+      state->discardCount[i]++;
+      state->deck[i][state->deckCount[i]--] = curse; //top card now a curse
+    }
+  }
+  return 0;
+}
 
 int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState *state, int handPos, int *bonus)
 {
@@ -1237,15 +1239,8 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
       discardCard(handPos, currentPlayer, state, 0);
       return 0;
 		
-    case sea_hag: /*****************************FUNCTION************************/
-      for (i = 0; i < state->numPlayers; i++){
-	if (i != currentPlayer){
-	  state->discard[i][state->discardCount[i]] = state->deck[i][state->deckCount[i]--];			    state->deckCount[i]--;
-	  state->discardCount[i]++;
-	  state->deck[i][state->deckCount[i]--] = curse;//Top card now a curse
-	}
-      }
-      return 0;
+    case sea_hag: 
+      seaHagPlayed(state);
 		
     case treasure_map:
       //search hand for another treasure_map
