@@ -691,18 +691,18 @@ int smithyPlayed(int handPos, struct gameState *state){
   discardCard(handPos, currentPlayer, state, 0); //discard current hand
   return 0;
 }
-/******************************************* SMITHY
-      //+3 Cards
-      for (i = 0; i < 3; i++)
-	{
-	  drawCard(currentPlayer, state);
-	}
-			
-      //discard card from hand
-      discardCard(handPos, currentPlayer, state, 0);
-      return 0;
-******************************************/
 
+int greatHallPlayed(int handPos, struct gameState *state) {
+
+  int currentPlayer = whoseTurn(state);
+
+  drawCard(currentPlayer, state); //+1 card
+
+  state->numActions++; //+1 action
+
+  discardCard(handPos, currentPlayer, state, 0); //discard card from hand
+  return 0;
+}
 
 /******************************************* GREAT HALL
       //+1 Card
@@ -984,17 +984,9 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
       
       return 0;
 		
-    case great_hall: /**********************FUNCTION**************************/
-      //+1 Card
-      drawCard(currentPlayer, state);
-			
-      //+1 Actions
-      state->numActions++;
-			
-      //discard card from hand
-      discardCard(handPos, currentPlayer, state, 0);
-      return 0;
-		
+    case great_hall:
+      greatHallPlayed(handPos, state);
+    
     case minion:
       //+1 action
       state->numActions++;
