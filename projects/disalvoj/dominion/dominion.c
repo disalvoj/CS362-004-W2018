@@ -704,26 +704,14 @@ int greatHallPlayed(int handPos, struct gameState *state) {
   return 0;
 }
 
-/******************************************* GREAT HALL
-      //+1 Card
-      drawCard(currentPlayer, state);
-			
-      //+1 Actions
-      state->numActions++;
-			
-      //discard card from hand
-      discardCard(handPos, currentPlayer, state, 0);
-      return 0;
-*******************************************/
+int outpostPlayed(int handPos, struct gameState *state) {
+  int currentPlayer = whoseTurn(state);
 
-/************************************************OUTPOST********************
-      //set outpost flag
-      state->outpostPlayed++;
-			
-      //discard card
-      discardCard(handPos, currentPlayer, state, 0);
-      return 0;
-******************************************************/
+  state->outpostPlayed++; //set outpost flag
+
+  discardCard(handPos, currentPlayer, state, 0); //discard
+  return 0;
+}
 
 /******************************************SEA_HAG***************
  
@@ -1230,13 +1218,8 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
       discardCard(handPos, currentPlayer, state, 1);		
       return 0;
 		
-    case outpost: /***********************FUNCTION************************/
-      //set outpost flag
-      state->outpostPlayed++;
-			
-      //discard card
-      discardCard(handPos, currentPlayer, state, 0);
-      return 0;
+    case outpost:
+      outpostPlayed(handPos, state);
 		
     case salvager:
       //+1 buy
